@@ -11,14 +11,9 @@ public class DrawGizmos : MonoBehaviour {
         if (GM.DrawGizmos)
         {
             Gizmos.color = _boxColor;
-            Gizmos.DrawWireCube(this.transform.position, this.GetComponent<BoxCollider2D>().size);
+            Gizmos.DrawWireCube(this.transform.position, this.GetComponent<BoxCollider>().size);
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(this.transform.position, this.transform.localScale.x * 0.1f);
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
