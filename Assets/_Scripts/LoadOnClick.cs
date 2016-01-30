@@ -13,4 +13,9 @@ public class LoadOnClick : MonoBehaviour {
 		Application.LoadLevel (level);
 	}
 
+	public void ExitApplication()
+	{
+		Application.Quit();
+	}
+		
 }
