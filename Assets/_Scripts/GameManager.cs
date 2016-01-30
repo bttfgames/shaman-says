@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         SpellList = new List<GameObject>();
+    }
+
+    void Start(){ 
 
         StartRound(1);
     }
@@ -100,6 +103,9 @@ public class GameManager : MonoBehaviour {
         }
         _turnOn = true;
         Debug.Log("Turno: " + _turn);
+
+        //reinicia o ritmo
+        BeatControl.instance.BeatStart();
 
     }
 
