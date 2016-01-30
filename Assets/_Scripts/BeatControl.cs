@@ -32,11 +32,11 @@ public class BeatControl : MonoBehaviour {
             Destroy(gameObject);
         }
         //Sets this to not be destroyed when reloading scene
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
         // Use this for initialization
-        void Start () {
+    void Start () {
 		SpellPosInit = RightPosition.transform.position.x - TotenRight.transform.position.x ;
         HideToten();
         BeatStart();
@@ -44,33 +44,36 @@ public class BeatControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (GameManager.instance._started)
+        {
+            if (GameManager.instance._bpm != OldBpm)
+                SetSpeedSpell();
 
-		if (GameManager.instance._bpm != OldBpm)
-			SetSpeedSpell ();
-
-		//dispara a batida
-		if (Time.realtimeSinceStartup > NextBeat) {
-			NextBeat = InitTime + (_bts * BeatCounter);
-			BeatCounter++;
-			Beat ();
-		}
+            //dispara a batida
+            if (Time.realtimeSinceStartup > NextBeat)
+            {
+                NextBeat = InitTime + (_bts * BeatCounter);
+                BeatCounter++;
+                Beat();
+            }
+        }
 	
 	}
 
 	void Beat() {
-		//toca a batida do tambor
-		TotenLeft.SetActive(true);
-		TotenRight.SetActive(true);
-		float BlinkTime = SpellSize / GameManager.instance._spellVelocity * 1.2f;
+        //toca a batida do tambor
+        TotenLeft.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        TotenRight.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        float BlinkTime = SpellSize / GameManager.instance._spellVelocity * 1.2f;
 		Invoke ("HideToten", BlinkTime);
 	}
 
 	void HideToten (){
-		TotenLeft.SetActive(false);
-		TotenRight.SetActive(false);
-	}
+		TotenLeft.GetComponentInChildren<SpriteRenderer>().enabled = false;
+        TotenRight.GetComponentInChildren<SpriteRenderer>().enabled = false;
+    }
 
-	void SetSpeedSpell(){
+	public void SetSpeedSpell(){
 		OldBpm = GameManager.instance._bpm;
 		_bts = (60f / GameManager.instance._bpm);
 		GameManager.instance._spellVelocity = (TotensDistance / GameManager.instance._spellBetween) / _bts;
