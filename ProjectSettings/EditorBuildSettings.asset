@@ -4,4 +4,18 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Scenes/Splash.unity
+  - enabled: 1
+    path: Assets/_Scenes/Menu.unity
+  - enabled: 1
+    path: Assets/_Scenes/Welcome.unity
+  - enabled: 1
+    path: Assets/_Scenes/Main.unity
+  - enabled: 1
+    path: Assets/_Scenes/Credits.unity
+  - enabled: 1
+    path: Assets/_Scenes/HelpControls.unity
+  - enabled: 1
+    path: Assets/_Scenes/HelpHowToPlay.unity

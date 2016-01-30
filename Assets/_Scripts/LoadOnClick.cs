@@ -5,7 +5,7 @@ public class LoadOnClick : MonoBehaviour {
 
 	public GameObject loadingImage;
 
-	public void LoadScene(int level)
+	public void LoadScene(string level)
 	{
 		if(loadingImage != null)
 			loadingImage.SetActive (true);
