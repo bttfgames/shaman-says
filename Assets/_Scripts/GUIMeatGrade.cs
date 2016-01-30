@@ -1,27 +1,29 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GUIMeatGrade : MonoBehaviour {
 
     private string[] MeatGrade = {"Extra-Rare", "Rare", "Medium Rare", "Medium Well", "Well Done", "Over Cooked" };
     private int MeatGradeIndex = 0;
     public GameObject PlayerText;
-    
 
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	void Awake () {
+		//Teste da função
+		IncreaseMeatGrade ();
 	}
 
     public void IncreaseMeatGrade ()
     {
         MeatGradeIndex++;
-        PlayerText.GetComponent<Text>().Text = MeatGrade[MeatGradeIndex];
+		//Assegura que não vai buscar valor maior que o tamanho do vetor
+		if (MeatGradeIndex > MeatGrade.Length)
+			return;
+		
+		Text t = PlayerText.GetComponent<Text>();
+		t.text = MeatGrade [MeatGradeIndex];
     }
 
 }
