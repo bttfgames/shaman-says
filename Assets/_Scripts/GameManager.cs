@@ -20,6 +20,11 @@ public class GameManager : MonoBehaviour {
     public GameObject _spellList;
     public int _bpm = 0;
     public bool _player1Turn = false;
+
+    public Animator P1Anim;
+    public Animator P2Anim;
+    private Animator AnimAtual;
+
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -50,11 +55,12 @@ public class GameManager : MonoBehaviour {
     public void NextTurn()
     {
         _turn++;
-        _spellVelocity += 0.5f;
+        //_spellVelocity += 0.5f;
         GameObject p1;
         Transform pos;
         _player1Turn = !_player1Turn;
         pos = (_player1Turn) ? LeftPos : RightPos;
+        AnimAtual = (_player1Turn) ? P1Anim : P2Anim;
         p1 = Instantiate(_spell, pos.position, Quaternion.identity) as GameObject;
         p1.transform.SetParent(_spellList.transform);
         p1.GetComponent<Spell>()._last = true;
@@ -75,7 +81,6 @@ public class GameManager : MonoBehaviour {
                 foreach (GameObject sp in SpellList)
                 {
                     sp.transform.localPosition = new Vector3(-(_spellDistance * count), 0, 0);
-                    Debug.Log(_spellDistance * count);
                     count++;
                 }
                 
@@ -87,7 +92,6 @@ public class GameManager : MonoBehaviour {
                 foreach (GameObject sp in SpellList)
                 {
                     sp.transform.localPosition = new Vector3((_spellDistance * count), 0, 0);
-                    Debug.Log(_spellDistance * count);
                     count++;
                 }
             }
@@ -111,33 +115,76 @@ public class GameManager : MonoBehaviour {
                 _spellList.transform.Translate(Vector3.left * (_spellVelocity * Time.deltaTime));
             }
 
+            bool check = false;
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("Apertou espaço");
                 foreach (var sp in SpellList)
                 {
                     if (sp.GetComponent<Spell>()._isOnTrigger)
                     {
-                        Debug.Log("Está no trigger");
-                        if (Input.GetKey(KeyCode.UpArrow))
+                        if (Input.GetKey(KeyCode.W))
                         {
-                            sp.GetComponent<Spell>().SetType(Spell.SpellType.UP);
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP);
+                            P1Anim.SetTrigger("Up");
                         }
-                        if (Input.GetKey(KeyCode.DownArrow))
+                        if (Input.GetKey(KeyCode.S))
                         {
-                            sp.GetComponent<Spell>().SetType(Spell.SpellType.DOWN);
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN);
+                            P1Anim.SetTrigger("Down");
                         }
-                        if (Input.GetKey(KeyCode.LeftArrow))
+                        if (Input.GetKey(KeyCode.A))
                         {
-                            sp.GetComponent<Spell>().SetType(Spell.SpellType.LEFT);
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT);
+                            P1Anim.SetTrigger("Left");
                         }
-                        if (Input.GetKey(KeyCode.RightArrow))
+                        if (Input.GetKey(KeyCode.D))
                         {
-                            sp.GetComponent<Spell>().SetType(Spell.SpellType.RIGHT);
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT);
+                            P1Anim.SetTrigger("Right");
                         }
                     }
                 }
+                if (!check)
+                {
+                    Debug.Log("PERDEUUUUU");
+                }
             }
+
+            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                foreach (var sp in SpellList)
+                {
+                    if (sp.GetComponent<Spell>()._isOnTrigger)
+                    {
+                        if (Input.GetKey(KeyCode.UpArrow))
+                        {
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP);
+                            P2Anim.SetTrigger("Up");
+                        }
+                        if (Input.GetKey(KeyCode.DownArrow))
+                        {
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN);
+                            P2Anim.SetTrigger("Down");
+                        }
+                        if (Input.GetKey(KeyCode.LeftArrow))
+                        {
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT);
+                            P2Anim.SetTrigger("Left");
+                        }
+                        if (Input.GetKey(KeyCode.RightArrow))
+                        {
+                            check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT);
+                            P2Anim.SetTrigger("Right");
+                        }
+                    }
+                }
+                if (!check)
+                {
+                    Debug.Log("PERDEUUUUU");
+                }
+            }
+            
         }
     }
 }

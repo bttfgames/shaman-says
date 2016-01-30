@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Spell : MonoBehaviour {
 
-    public enum SpellType { UP, DOWN, LEFT, RIGHT };
+    public enum SpellType { NEW, UP, DOWN, LEFT, RIGHT };
     public Color _color;
     public SpellType _type;
     private float _velocity = 1.0f;
@@ -31,8 +31,25 @@ public class Spell : MonoBehaviour {
                 break;
         }
         this.GetComponent<SpriteRenderer>().color = _color;
+    }
 
-        this._velocity = Random.Range(1.0f, 3.0f);
+    public bool CheckType(SpellType type)
+    {
+        Debug.Log("type: " + type + " _type" + _type);
+        if(_type == SpellType.NEW)
+        {
+            SetType(type);
+            return true;
+        }
+        else
+        {
+            if( _type == type)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
