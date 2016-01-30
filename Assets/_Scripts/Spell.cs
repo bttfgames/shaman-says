@@ -8,6 +8,7 @@ public class Spell : MonoBehaviour {
     public SpellType _type;
     private float _velocity = 1.0f;
     public bool _isOnTrigger = false;
+    public bool _last = false;
 	
     public void SetType(SpellType type)
     {
@@ -32,11 +33,6 @@ public class Spell : MonoBehaviour {
         this.GetComponent<SpriteRenderer>().color = _color;
 
         this._velocity = Random.Range(1.0f, 3.0f);
-    }
-
-    void Update()
-    {
-        this.transform.Translate(Vector3.right *(_velocity * Time.deltaTime));
     }
 
 }

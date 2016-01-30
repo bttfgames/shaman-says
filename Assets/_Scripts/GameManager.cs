@@ -10,15 +10,16 @@ public class GameManager : MonoBehaviour {
     public GameObject _spell;
     public Transform LeftPos;
     public Transform RightPos;
-    public List<GameObject> SpellList;
-    public float SpellVelocity = 1.0f;
-    private float _timeToStart = 3.0f;
-    private int round = 1;
-    private int turn = 1;
+    private List<GameObject> SpellList;
+    public float _spellVelocity = 1.0f;
+    private int _round = 1;
+    private int _turn = 0;
     private bool _started = false;
+    public bool _turnOn = false;
     public float _spellDistance = 1.0f;
-    private GameObject _spellList;
+    public GameObject _spellList;
     public int _bpm = 0;
+    public bool _player1Turn = false;
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -34,38 +35,106 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         SpellList = new List<GameObject>();
+
+        StartRound(1);
     }
 
-    IEnumerator StartRound()
+    void StartRound(int round)
     {
-        while(_timeToStart > 0.0f)
-        {
-            GameObject.Find("TextInit").GetComponent<Text>().text = _timeToStart.ToString();
-            _timeToStart -= 1.0f;
-            yield return new WaitForSeconds(1.0f);
-        }
+        _round = round;
         _started = true;
+
+        NextTurn();
+    }
+
+    public void NextTurn()
+    {
+        _turn++;
+        _spellVelocity += 0.5f;
+        GameObject p1;
+        Transform pos;
+        _player1Turn = !_player1Turn;
+        pos = (_player1Turn) ? LeftPos : RightPos;
+        p1 = Instantiate(_spell, pos.position, Quaternion.identity) as GameObject;
+        p1.transform.SetParent(_spellList.transform);
+        p1.GetComponent<Spell>()._last = true;
+        SpellList.Add(p1);
+        
+        if (_turn == 1) {
+            p1.transform.Translate(Vector3.left * (_spellDistance * 3));
+        }
+        else
+        {
+            _spellList.transform.position = pos.position;
+            int count = 0;
+            if (_player1Turn)
+            {
+                
+                GameObject.Find("LeftPosition").GetComponent<BoxCollider>().enabled = false;
+                GameObject.Find("RightPosition").GetComponent<BoxCollider>().enabled = true;
+                foreach (GameObject sp in SpellList)
+                {
+                    sp.transform.localPosition = new Vector3(-(_spellDistance * count), 0, 0);
+                    Debug.Log(_spellDistance * count);
+                    count++;
+                }
+                
+            }
+            else
+            {
+                GameObject.Find("LeftPosition").GetComponent<BoxCollider>().enabled = true;
+                GameObject.Find("RightPosition").GetComponent<BoxCollider>().enabled = false;
+                foreach (GameObject sp in SpellList)
+                {
+                    sp.transform.localPosition = new Vector3((_spellDistance * count), 0, 0);
+                    Debug.Log(_spellDistance * count);
+                    count++;
+                }
+            }
+
+        }
+        _turnOn = true;
+        Debug.Log("Turno: " + _turn);
+
     }
 
     void Update()
     {
-        if (_started)
+        if (_started && _turnOn)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (_player1Turn)
             {
-                GameObject p1;
-                p1 = Instantiate(_spell, LeftPos.position, Quaternion.identity) as GameObject;
-                SpellList.Add(p1);
-
+                _spellList.transform.Translate(Vector3.right * (_spellVelocity * Time.deltaTime));
+            }
+            else
+            {
+                _spellList.transform.Translate(Vector3.left * (_spellVelocity * Time.deltaTime));
             }
 
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                foreach (GameObject spell in SpellList)
+                Debug.Log("Apertou espaço");
+                foreach (var sp in SpellList)
                 {
-                    if (spell.GetComponent<Spell>()._isOnTrigger)
+                    if (sp.GetComponent<Spell>()._isOnTrigger)
                     {
-                        spell.GetComponent<Spell>().SetType(Spell.SpellType.UP);
+                        Debug.Log("Está no trigger");
+                        if (Input.GetKey(KeyCode.UpArrow))
+                        {
+                            sp.GetComponent<Spell>().SetType(Spell.SpellType.UP);
+                        }
+                        if (Input.GetKey(KeyCode.DownArrow))
+                        {
+                            sp.GetComponent<Spell>().SetType(Spell.SpellType.DOWN);
+                        }
+                        if (Input.GetKey(KeyCode.LeftArrow))
+                        {
+                            sp.GetComponent<Spell>().SetType(Spell.SpellType.LEFT);
+                        }
+                        if (Input.GetKey(KeyCode.RightArrow))
+                        {
+                            sp.GetComponent<Spell>().SetType(Spell.SpellType.RIGHT);
+                        }
                     }
                 }
             }
