@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
     private bool _started = false;
     public bool _turnOn = false;
     public float _spellDistance = 1.0f;
+	public int _spellBetween = 3;
     public GameObject _spellList;
     public int _bpm = 0;
     public bool _player1Turn = false;
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour {
     public void NextTurn()
     {
         _turn++;
-        _spellVelocity += 0.5f;
+        //_spellVelocity += 0.5f;
         GameObject p1;
         Transform pos;
         _player1Turn = !_player1Turn;
