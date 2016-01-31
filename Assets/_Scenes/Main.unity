@@ -1163,7 +1163,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: []
   _type: 0
-  _isOnTrigger: 0
+  _isOnTriggerLeft: 0
+  _isOnTriggerRight: 0
   _last: 0
   _oldSprite: {fileID: 0}
   _p1Check: 0
@@ -1405,7 +1406,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: []
   _type: 0
-  _isOnTrigger: 0
+  _isOnTriggerLeft: 0
+  _isOnTriggerRight: 0
   _last: 0
   _oldSprite: {fileID: 0}
   _p1Check: 1
@@ -2367,7 +2369,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2ecc6d77aaccb4a3a960ff7cb73be687, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.05
+  m_Volume: 0.29
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2441,7 +2443,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0960a7f05b47e174ab38a066720c9821, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.37
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2582,7 +2584,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: []
   _type: 0
-  _isOnTrigger: 0
+  _isOnTriggerLeft: 0
+  _isOnTriggerRight: 0
   _last: 0
   _oldSprite: {fileID: 0}
   _p1Check: 1
