@@ -18,7 +18,7 @@ public class BeatControl : MonoBehaviour {
 	private float OldBpm;
 	private float _bts;
 	private float SpellPosInit;
-
+    public AudioClip _tambor;
 
     //Awake is always called before any Start functions
     void Awake()
@@ -69,12 +69,8 @@ public class BeatControl : MonoBehaviour {
 		//toca a batida do tambor (efeito visual totem)
         TotenLeft.GetComponentInChildren<SpriteRenderer>().enabled = true;
         TotenRight.GetComponentInChildren<SpriteRenderer>().enabled = true;
-		//Toca audio tambor (efeito sonoro)
-		foreach (AudioSource a in GameManager.instance.GetComponents<AudioSource>()) {
-			if (a.clip.name == "Tambor") {
-				a.PlayOneShot (a.clip);
-			}
-		}
+        //Toca audio tambor (efeito sonoro)
+        GameObject.Find("Tambor").GetComponent<AudioSource>().PlayOneShot(_tambor);
 
         float BlinkTime = SpellSize / GameManager.instance._spellVelocity * 1.2f;
 		Invoke ("HideToten", BlinkTime);

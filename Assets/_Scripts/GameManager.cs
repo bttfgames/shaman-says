@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
     public GameObject P2Grade;
     private int _p1Life = 5;
     private int _p2Life = 5;
-
+    public AudioClip _loose;
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -53,13 +53,6 @@ public class GameManager : MonoBehaviour {
 
     public void FinishRound(bool p1Win)
     {
-		//Toca audio Player Lost (efeito sonoro)
-		foreach (AudioSource a in GameManager.instance.GetComponents<AudioSource>()) {
-			if (a.clip.name == "PlayerLost") {
-				a.PlayOneShot (a.clip);
-			}
-		}
-
         if (p1Win)
         {
             _p2Life--;
@@ -77,6 +70,7 @@ public class GameManager : MonoBehaviour {
             P2Anim.SetTrigger("Win");
         }
 
+        GameObject.Find("LoseAudio").GetComponent<AudioSource>().PlayOneShot(_loose);
         int minLife = Mathf.Min(_p1Life, _p2Life);
 
         GameObject.Find("Fire").transform.position = new Vector3(0, 0.4f - (minLife * 0.4f), 5);
@@ -209,16 +203,7 @@ public class GameManager : MonoBehaviour {
     
     void Update()
     {
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			_started = false;
-			_turnOn = false;
-
-			SceneManager.LoadScene("Menu");
-
-		}
-
-		if(_waitingStart)
+        if(_waitingStart)
         {
             if (Input.anyKeyDown)
             {
@@ -228,6 +213,15 @@ public class GameManager : MonoBehaviour {
             }
 
                 return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _started = false;
+            _turnOn = false;
+
+            SceneManager.LoadScene("Menu");
+            
         }
 
         if (_started && _turnOn)

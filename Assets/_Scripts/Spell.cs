@@ -34,6 +34,7 @@ public class Spell : MonoBehaviour {
             default:
                 break;
         }
+        this.GetComponentInChildren<Animator>().SetTrigger("Blink");
     }
 
     public bool CheckType(SpellType type, bool p1)
@@ -49,6 +50,7 @@ public class Spell : MonoBehaviour {
         {
             if( _type == type)
             {
+                this.GetComponentInChildren<Animator>().SetTrigger("Blink");
                 return true;
             }
         }
