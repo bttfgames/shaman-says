@@ -10,6 +10,8 @@ public class Spell : MonoBehaviour {
     public bool _isOnTrigger = false;
     public bool _last = false;
     public GameObject _oldSprite;
+    public bool _p1Check = false;
+    public bool _p2Check = false;
 
     public void SetType(SpellType type)
     {
@@ -34,9 +36,10 @@ public class Spell : MonoBehaviour {
         }
     }
 
-    public bool CheckType(SpellType type)
+    public bool CheckType(SpellType type, bool p1)
     {
-        Debug.Log("type: " + type + " _type" + _type);
+        if (p1){_p1Check = true;}else{_p2Check = true;}
+
         if(_type == SpellType.NEW)
         {
             SetType(type);

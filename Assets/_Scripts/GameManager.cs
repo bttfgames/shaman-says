@@ -157,6 +157,7 @@ public class GameManager : MonoBehaviour {
 
             if (_startDetect)
             {
+                //Check de input do player 1
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     foreach (var sp in SpellList)
@@ -165,25 +166,25 @@ public class GameManager : MonoBehaviour {
                         {
                             if (Input.GetKey(KeyCode.W))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, true);
                                 if (check)
                                     P1Anim.SetTrigger("Up");
                             }
                             if (Input.GetKey(KeyCode.S))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, true);
                                 if (check)
                                     P1Anim.SetTrigger("Down");
                             }
                             if (Input.GetKey(KeyCode.A))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, true);
                                 if (check)
                                     P1Anim.SetTrigger("Left");
                             }
                             if (Input.GetKey(KeyCode.D))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, true);
                                 if (check)
                                     P1Anim.SetTrigger("Right");
                             }
@@ -205,25 +206,25 @@ public class GameManager : MonoBehaviour {
                         {
                             if (Input.GetKey(KeyCode.UpArrow))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, false);
                                 if (check)
                                     P2Anim.SetTrigger("Up");
                             }
                             if (Input.GetKey(KeyCode.DownArrow))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, false);
                                 if (check)
                                     P2Anim.SetTrigger("Down");
                             }
                             if (Input.GetKey(KeyCode.LeftArrow))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, false);
                                 if (check)
                                     P2Anim.SetTrigger("Right");
                             }
                             if (Input.GetKey(KeyCode.RightArrow))
                             {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT);
+                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, false);
                                 if (check)
                                     P2Anim.SetTrigger("Left");
                             }
