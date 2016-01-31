@@ -209,7 +209,16 @@ public class GameManager : MonoBehaviour {
     
     void Update()
     {
-        if(_waitingStart)
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			_started = false;
+			_turnOn = false;
+
+			SceneManager.LoadScene("Menu");
+
+		}
+
+		if(_waitingStart)
         {
             if (Input.anyKeyDown)
             {
@@ -219,15 +228,6 @@ public class GameManager : MonoBehaviour {
             }
 
                 return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _started = false;
-            _turnOn = false;
-
-            SceneManager.LoadScene("Menu");
-            
         }
 
         if (_started && _turnOn)
