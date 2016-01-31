@@ -6,7 +6,9 @@ using System.Collections.Generic;
 public class GUIMeatGrade : MonoBehaviour {
 
     private string[] MeatGrade = {"Extra-Rare", "Rare", "Medium Rare", "Medium Well", "Well Done", "Over Cooked" };
-    private int MeatGradeIndex = 0;
+	private int MeatGradeIndex = 0;
+
+	public Sprite[] LifeBar;
     public GameObject PlayerText;
 
 	// Use this for initialization
