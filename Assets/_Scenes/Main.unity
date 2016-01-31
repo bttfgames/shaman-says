@@ -499,7 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player1Prefix: 
   _player2Prefix: 
-  _debug: 1
+  _debug: 0
 --- !u!4 &298926406
 Transform:
   m_ObjectHideFlags: 0
