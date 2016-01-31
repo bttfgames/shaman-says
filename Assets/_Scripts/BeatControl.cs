@@ -66,9 +66,16 @@ public class BeatControl : MonoBehaviour {
 	}
 
 	void Beat() {
-        //toca a batida do tambor
+		//toca a batida do tambor (efeito visual totem)
         TotenLeft.GetComponentInChildren<SpriteRenderer>().enabled = true;
         TotenRight.GetComponentInChildren<SpriteRenderer>().enabled = true;
+		//Toca audio tambor (efeito sonoro)
+		foreach (AudioSource a in GameManager.instance.GetComponents<AudioSource>()) {
+			if (a.clip.name == "Tambor") {
+				a.PlayOneShot (a.clip);
+			}
+		}
+
         float BlinkTime = SpellSize / GameManager.instance._spellVelocity * 1.2f;
 		Invoke ("HideToten", BlinkTime);
 	}
