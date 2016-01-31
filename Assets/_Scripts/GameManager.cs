@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour {
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.KeypadEnter))
+                if (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.KeypadEnter))
                 {
                     foreach (var sp in SpellList)
                     {
