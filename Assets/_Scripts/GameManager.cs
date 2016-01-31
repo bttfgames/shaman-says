@@ -241,31 +241,34 @@ public class GameManager : MonoBehaviour {
             if (_startDetect)
             {
                 //Check de input do player 1
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown(InputManager.instance._player1Prefix + "_Fire"))
                 {
                     foreach (var sp in SpellList)
                     {
                         if (sp.GetComponent<Spell>()._isOnTriggerLeft)
                         {
-                            if (Input.GetKey(KeyCode.W))
+                            if (Input.GetKey(KeyCode.W) || Input.GetAxis(InputManager.instance._player1Prefix + "_Y") > 0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, true);
                                 if (check)
+                                {
+                                    Debug.Log("TRIGGER UPPP");
                                     P1Anim.SetTrigger("Up");
+                                }
                             }
-                            if (Input.GetKey(KeyCode.S))
+                            if (Input.GetKey(KeyCode.S) || Input.GetAxis(InputManager.instance._player1Prefix + "_Y") < -0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, true);
                                 if (check)
                                     P1Anim.SetTrigger("Down");
                             }
-                            if (Input.GetKey(KeyCode.A))
+                            if (Input.GetKey(KeyCode.A) || Input.GetAxis(InputManager.instance._player1Prefix + "_X") < -0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, true);
                                 if (check)
                                     P1Anim.SetTrigger("Left");
                             }
-                            if (Input.GetKey(KeyCode.D))
+                            if (Input.GetKey(KeyCode.D) || Input.GetAxis(InputManager.instance._player1Prefix + "_X") > 0.8f )
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, true);
                                 if (check)
@@ -279,35 +282,35 @@ public class GameManager : MonoBehaviour {
                     }
                 }
 
-                if (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.KeypadEnter))
+                if (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetButtonDown(InputManager.instance._player2Prefix + "_Fire"))
                 {
                     foreach (var sp in SpellList)
                     {
                         if (sp.GetComponent<Spell>()._isOnTriggerRight)
                         {
-                            if (Input.GetKey(KeyCode.UpArrow))
+                            if (Input.GetKey(KeyCode.UpArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_Y") > 0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, false);
                                 if (check)
                                     P2Anim.SetTrigger("Up");
                             }
-                            if (Input.GetKey(KeyCode.DownArrow))
+                            if (Input.GetKey(KeyCode.DownArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_Y") < -0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, false);
                                 if (check)
                                     P2Anim.SetTrigger("Down");
                             }
-                            if (Input.GetKey(KeyCode.LeftArrow))
+                            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_X") < -0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, false);
                                 if (check)
-                                    P2Anim.SetTrigger("Right");
+                                    P2Anim.SetTrigger("Right");//Invertido por causa da animação
                             }
-                            if (Input.GetKey(KeyCode.RightArrow))
+                            if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_X") > 0.8f)
                             {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, false);
                                 if (check)
-                                    P2Anim.SetTrigger("Left");
+                                    P2Anim.SetTrigger("Left");//Invertido por causa da animação
                             }
                         }
                     }
