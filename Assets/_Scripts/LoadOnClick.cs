@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class LoadOnClick : MonoBehaviour {
@@ -10,7 +11,8 @@ public class LoadOnClick : MonoBehaviour {
 		if(loadingImage != null)
 			loadingImage.SetActive (true);
 		
-		Application.LoadLevel (level);
+		//Application.LoadLevel (level);
+		SceneManager.LoadScene (level);
 	}
 
 	public void ExitApplication()
