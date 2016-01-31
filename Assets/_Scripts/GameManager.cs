@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
     public Transform RightPos;
     private List<GameObject> SpellList;
     public float _spellVelocity = 1.0f;
-    private int _round = 1;
+    private int _round = 0;
     private int _turn = 0;
     public bool _started = false;
     public bool _turnOn = false;
@@ -47,23 +47,70 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    void StartRound(int round)
+    public void FinishRound(bool p1Win)
     {
-        SpellList = new List<GameObject>();
-
-        BeatControl.instance.SetSpeedSpell();
-        int count = 0;
-        _spellList.transform.position = LeftPos.position;
-        foreach (GameObject sc in _spellCount)
+        if (p1Win)
         {
-            sc.transform.localPosition = new Vector3(-(_spellDistance * count), 0, 0);
-            count++;
+            Debug.Log("P1 win");
+            P2Anim.SetTrigger("Lose");
+            P1Anim.SetTrigger("Win");
+        }
+        else
+        {
+            Debug.Log("P2 win");
+            P1Anim.SetTrigger("Lose");
+            P2Anim.SetTrigger("Win");
+        }
+        
+        _started = false;
+        _turnOn = false;
+        _spellList.SetActive(false);
+        _bpm = 50;
+
+        foreach(Transform child in _spellList.transform)
+        {
+            Destroy(child.gameObject);
         }
 
-        _round = round;
-        _started = true;
+        Debug.Log("Invokando o kramunhao");
+        Invoke("StartRound", 3.0f);
+    }
 
-        NextTurn();
+    void StartRound()
+    {
+        _round++;
+        Debug.Log("Novo Round: "+ _round);
+        SpellList = new List<GameObject>();
+        _spellList.SetActive(true);
+        BeatControl.instance.SetSpeedSpell();
+        int count = 0;
+
+        if (_round % 2 != 0 )//inicia com o p1
+        {
+            _spellList.transform.position = LeftPos.position;
+            _player1Turn = false;
+        }
+        else//p2
+        {
+            _spellList.transform.position = RightPos.position;
+            _player1Turn = true; //Inicio oposto pois vai trocar no NextTurn
+        }
+        if (_round == 1)
+        {
+            foreach (GameObject sc in _spellCount)
+            {
+                sc.transform.localPosition = new Vector3(-(_spellDistance * count), 0, 0);
+                count++;
+            }
+        }
+
+        //P1Anim.SetTrigger("Idle_back");
+        //P2Anim.SetTrigger("Idle_back");
+        _started = true;
+        _turn = 0;
+        Debug.Log("Iniciando Turno");
+        Invoke("NextTurn", 2.0f);
+        //NextTurn();
     }
 
     public void NextTurn()
@@ -80,7 +127,7 @@ public class GameManager : MonoBehaviour {
         p1.GetComponent<Spell>()._last = true;
         SpellList.Add(p1);
         
-        if (_turn == 1) {
+        if (_turn == 1 && _round == 1) {
             p1.transform.localPosition = new Vector3(-(_spellDistance * 3), 0, 0);
         }
         else
@@ -96,6 +143,8 @@ public class GameManager : MonoBehaviour {
                 foreach (GameObject sp in SpellList)
                 {
                     sp.transform.localPosition = new Vector3(-(_spellDistance * count), 0, 0);
+                    sp.GetComponent<Spell>()._p1Check = false;
+                    sp.GetComponent<Spell>()._p2Check = false;
                     count++;
                 }
                 
@@ -107,6 +156,8 @@ public class GameManager : MonoBehaviour {
                 foreach (GameObject sp in SpellList)
                 {
                     sp.transform.localPosition = new Vector3((_spellDistance * count), 0, 0);
+                    sp.GetComponent<Spell>()._p1Check = false;
+                    sp.GetComponent<Spell>()._p2Check = false;
                     count++;
                 }
             }
@@ -118,7 +169,7 @@ public class GameManager : MonoBehaviour {
         BeatControl.instance.BeatStart();
 
     }
-
+    
     void Update()
     {
         if(_waitingStart)
@@ -127,7 +178,7 @@ public class GameManager : MonoBehaviour {
             {
 
                 _waitingStart = false;
-                StartRound(1);
+                StartRound();
             }
 
                 return;
@@ -192,9 +243,7 @@ public class GameManager : MonoBehaviour {
                     }
                     if (!check)
                     {
-                        P1Anim.SetTrigger("Lose");
-                        P2Anim.SetTrigger("Win");
-                        Debug.Log("PERDEUUUUU");
+                        FinishRound(false);
                     }
                 }
 
@@ -232,9 +281,8 @@ public class GameManager : MonoBehaviour {
                     }
                     if (!check)
                     {
-                        P2Anim.SetTrigger("Lose");
-                        P1Anim.SetTrigger("Win");
-                        Debug.Log("PERDEUUUUU");
+                        FinishRound(true);
+                        
                     }
                 }
             }
