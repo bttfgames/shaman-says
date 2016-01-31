@@ -4,33 +4,34 @@ using System.Collections;
 public class Spell : MonoBehaviour {
 
     public enum SpellType { NEW, UP, DOWN, LEFT, RIGHT };
-    public Color _color;
+    public Sprite[] _image;
     public SpellType _type;
     private float _velocity = 1.0f;
     public bool _isOnTrigger = false;
     public bool _last = false;
-	
+    public GameObject _oldSprite;
+
     public void SetType(SpellType type)
     {
         _type = type;
+        _oldSprite.SetActive(false);
         switch (_type)
         {
             case SpellType.UP:
-                _color = Color.yellow;
+                GetComponentInChildren<SpriteRenderer>().sprite = _image[0];
                 break;
             case SpellType.DOWN:
-                _color = Color.green;
+                GetComponentInChildren<SpriteRenderer>().sprite = _image[1];
                 break;
             case SpellType.LEFT:
-                _color = Color.blue;
+                GetComponentInChildren<SpriteRenderer>().sprite = _image[2];
                 break;
             case SpellType.RIGHT:
-                _color = Color.red;
+                GetComponentInChildren<SpriteRenderer>().sprite = _image[3];
                 break;
             default:
                 break;
         }
-        this.GetComponent<SpriteRenderer>().color = _color;
     }
 
     public bool CheckType(SpellType type)

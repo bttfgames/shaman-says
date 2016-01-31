@@ -44,6 +44,11 @@ public class BeatControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (GameManager.instance._waitingStart)
+        {
+            return;
+        }
+
         if (GameManager.instance._started)
         {
             if (GameManager.instance._bpm != OldBpm)
@@ -91,6 +96,5 @@ public class BeatControl : MonoBehaviour {
         NextBeat = InitTime + (60f / GameManager.instance._bpm);
         BeatCounter = 1;
         SetSpeedSpell();
-        print("funcionou");
     }
 }

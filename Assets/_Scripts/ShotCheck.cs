@@ -9,6 +9,11 @@ public class ShotCheck : MonoBehaviour {
         {
             other.GetComponent<Spell>()._isOnTrigger = true;
         }
+
+        if (other.tag == "SpellCount")
+        {
+            GameManager.instance._startDetect = true;
+        }
     }
 
     void OnTriggerExit(Collider other)
