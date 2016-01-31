@@ -4,12 +4,19 @@ using System.Collections;
 public class ShotCheck : MonoBehaviour {
 
     public bool _isP1 = false;
+	enum TriggerSide{Left, Right};
 
 	void OnTriggerStay(Collider other)
     {
         if( other.tag == "Spell")
         {
-            other.GetComponent<Spell>()._isOnTrigger = true;
+			if (_isP1) {
+				other.GetComponent<Spell> ()._isOnTriggerLeft = true;
+				other.GetComponent<Spell> ()._isOnTriggerRight = false;
+			} else {
+				other.GetComponent<Spell> ()._isOnTriggerLeft = false;
+				other.GetComponent<Spell> ()._isOnTriggerRight = true;
+			}
         }
 
         if (other.tag == "SpellCount")
@@ -22,7 +29,8 @@ public class ShotCheck : MonoBehaviour {
     {
         if (other.tag == "Spell")
         {
-            other.GetComponent<Spell>()._isOnTrigger = false;
+            other.GetComponent<Spell>()._isOnTriggerLeft = false;
+			other.GetComponent<Spell>()._isOnTriggerRight = false;
             if( _isP1)
             {
                 if(!other.GetComponent<Spell>()._p1Check)

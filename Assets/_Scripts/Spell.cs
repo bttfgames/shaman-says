@@ -7,7 +7,8 @@ public class Spell : MonoBehaviour {
     public Sprite[] _image;
     public SpellType _type;
     private float _velocity = 1.0f;
-    public bool _isOnTrigger = false;
+    public bool _isOnTriggerLeft = false;
+	public bool _isOnTriggerRight = false;
     public bool _last = false;
     public GameObject _oldSprite;
     public bool _p1Check = false;

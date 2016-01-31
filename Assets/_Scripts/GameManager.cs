@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour {
                 {
                     foreach (var sp in SpellList)
                     {
-                        if (sp.GetComponent<Spell>()._isOnTrigger)
+                        if (sp.GetComponent<Spell>()._isOnTriggerLeft)
                         {
                             if (Input.GetKey(KeyCode.W))
                             {
@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour {
                 {
                     foreach (var sp in SpellList)
                     {
-                        if (sp.GetComponent<Spell>()._isOnTrigger)
+                        if (sp.GetComponent<Spell>()._isOnTriggerRight)
                         {
                             if (Input.GetKey(KeyCode.UpArrow))
                             {
