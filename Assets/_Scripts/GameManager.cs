@@ -53,6 +53,13 @@ public class GameManager : MonoBehaviour {
 
     public void FinishRound(bool p1Win)
     {
+		//Toca audio Player Lost (efeito sonoro)
+		foreach (AudioSource a in GameManager.instance.GetComponents<AudioSource>()) {
+			if (a.clip.name == "PlayerLost") {
+				a.PlayOneShot (a.clip);
+			}
+		}
+
         if (p1Win)
         {
             _p2Life--;
@@ -202,7 +209,16 @@ public class GameManager : MonoBehaviour {
     
     void Update()
     {
-        if(_waitingStart)
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			_started = false;
+			_turnOn = false;
+
+			SceneManager.LoadScene("Menu");
+
+		}
+
+		if(_waitingStart)
         {
             if (Input.anyKeyDown)
             {
@@ -212,15 +228,6 @@ public class GameManager : MonoBehaviour {
             }
 
                 return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            _started = false;
-            _turnOn = false;
-
-            SceneManager.LoadScene("Menu");
-            
         }
 
         if (_started && _turnOn)
