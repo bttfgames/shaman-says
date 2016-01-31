@@ -85,6 +85,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1 &158127371
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,3 +661,5 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1857343580}
+=======
+>>>>>>> fbcac67e8416b0fc3fda972c15d56512665bf9a6
