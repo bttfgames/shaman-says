@@ -53,6 +53,13 @@ public class GameManager : MonoBehaviour {
 
     public void FinishRound(bool p1Win)
     {
+		//Toca audio Player Lost (efeito sonoro)
+		foreach (AudioSource a in GameManager.instance.GetComponents<AudioSource>()) {
+			if (a.clip.name == "PlayerLost") {
+				a.PlayOneShot (a.clip);
+			}
+		}
+
         if (p1Win)
         {
             _p2Life--;
