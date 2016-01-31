@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour {
     public Animator P2Anim;
     private Animator AnimAtual;
     public bool _waitingStart = true;
+    public GameObject P1Grade;
+    public GameObject P2Grade;
+    private int _p1Life = 5;
+    private int _p2Life = 5;
 
     //Awake is always called before any Start functions
     void Awake()
@@ -51,16 +55,24 @@ public class GameManager : MonoBehaviour {
     {
         if (p1Win)
         {
+            _p2Life--;
+            P2Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             Debug.Log("P1 win");
             P2Anim.SetTrigger("Lose");
             P1Anim.SetTrigger("Win");
         }
         else
         {
+            _p1Life--;
+            P1Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             Debug.Log("P2 win");
             P1Anim.SetTrigger("Lose");
             P2Anim.SetTrigger("Win");
         }
+
+        int minLife = Mathf.Min(_p1Life, _p2Life);
+
+        GameObject.Find("Fire").transform.position = new Vector3(0, 0.4f - (minLife * 0.4f), 5);
         
         _started = false;
         _turnOn = false;
@@ -72,14 +84,32 @@ public class GameManager : MonoBehaviour {
             Destroy(child.gameObject);
         }
 
-        Debug.Log("Invokando o kramunhao");
-        Invoke("StartRound", 3.0f);
+        if (minLife <= 0)
+        {
+
+            if(_p1Life > _p2Life)
+            {
+                GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Win = true;
+            }
+            else
+            {
+                GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Win = false;
+            }
+
+            GameOver();
+        }
+
+        Invoke("StartRound", 2.0f);
+    }
+
+    void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
     }
 
     void StartRound()
     {
         _round++;
-        Debug.Log("Novo Round: "+ _round);
         SpellList = new List<GameObject>();
         _spellList.SetActive(true);
         BeatControl.instance.SetSpeedSpell();
@@ -109,7 +139,7 @@ public class GameManager : MonoBehaviour {
         _started = true;
         _turn = 0;
         Debug.Log("Iniciando Turno");
-        Invoke("NextTurn", 2.0f);
+        Invoke("NextTurn", 1.0f);
         //NextTurn();
     }
 
