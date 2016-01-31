@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class LoadAfterTimeout : MonoBehaviour {
@@ -13,6 +14,7 @@ public class LoadAfterTimeout : MonoBehaviour {
 
 	private void LoadLevel()
 	{
-		Application.LoadLevel (LevelToLoad);
+		//Application.LoadLevel (LevelToLoad);
+		SceneManager.LoadScene (LevelToLoad);
 	}
 }
