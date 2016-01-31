@@ -209,6 +209,7 @@ public class GameManager : MonoBehaviour {
             {
 
                 _waitingStart = false;
+                GameObject.Find("TextStart").SetActive(false);
                 StartRound();
             }
 
