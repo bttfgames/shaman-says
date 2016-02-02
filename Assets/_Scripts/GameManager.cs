@@ -252,7 +252,6 @@ public class GameManager : MonoBehaviour {
                                 check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, true);
                                 if (check)
                                 {
-                                    Debug.Log("TRIGGER UPPP");
                                     P1Anim.SetTrigger("Up");
                                 }
                             }

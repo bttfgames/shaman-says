@@ -586,6 +586,7 @@ GameObject:
   - 81: {fileID: 1353288282}
   - 82: {fileID: 1353288287}
   - 82: {fileID: 1353288288}
+  - 114: {fileID: 1353288289}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -722,7 +723,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -796,7 +797,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -808,6 +809,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &1353288289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1353288281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46caa4ea5e9305649a981ba14cba74ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  P1: {fileID: 337791975}
+  P2: {fileID: 1879495728}
 --- !u!1 &1633599851
 GameObject:
   m_ObjectHideFlags: 0

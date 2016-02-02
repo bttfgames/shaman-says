@@ -6,6 +6,8 @@ public class InputManager : MonoBehaviour {
     public string _player1Prefix;
     public string _player2Prefix;
     public bool _debug = false;
+    private string _player1Description;
+    private string _player2Description;
 
     void Awake()
     {
@@ -18,7 +20,7 @@ public class InputManager : MonoBehaviour {
             Destroy(gameObject);
         }
         //Sets this to not be destroyed when reloading scene
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
     // Use this for initialization
@@ -29,10 +31,12 @@ public class InputManager : MonoBehaviour {
                 if(_player1Prefix == "")
                 {
                     _player1Prefix = "Joy" + i;
+                    _player1Description = Input.GetJoystickNames()[i - 1];
                 }
                 else if(_player2Prefix == "")
                 {
                     _player2Prefix = "Joy" + i;
+                    _player2Description = Input.GetJoystickNames()[i - 1];
                 }
             }
         }
@@ -57,5 +61,18 @@ public class InputManager : MonoBehaviour {
                 i++;
             }
         }
+    }
+
+    public string getPlayerDescription(string player)
+    {
+        if (player == "P1")
+        {
+            return _player1Description;
+        }
+        else if( player == "P2")
+        {
+            return _player2Description;
+        }
+        return "";
     }
 }
