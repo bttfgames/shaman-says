@@ -3489,7 +3489,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11425286, guid: 328f6e193b39e6a4c80773c27bfed9f5, type: 2}
       propertyPath: _bpm
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 11425286, guid: 328f6e193b39e6a4c80773c27bfed9f5, type: 2}
       propertyPath: P1Anim

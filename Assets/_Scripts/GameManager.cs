@@ -55,7 +55,8 @@ public class GameManager : MonoBehaviour {
     {
         if (p1Win)
         {
-            _p2Life--;
+            _p2Life -= 2;
+            P2Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             P2Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             Debug.Log("P1 win");
             P2Anim.SetTrigger("Lose");
@@ -63,7 +64,8 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            _p1Life--;
+            _p1Life -= 2;
+            P1Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             P1Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             Debug.Log("P2 win");
             P1Anim.SetTrigger("Lose");
@@ -78,7 +80,11 @@ public class GameManager : MonoBehaviour {
         _started = false;
         _turnOn = false;
         _spellList.SetActive(false);
-        _bpm = 50;
+        //_bpm = (int)(_bpm * 0.8f);
+
+        _bpm = Mathf.FloorToInt((_bpm / 10) * 0.8f) * 10;
+        
+        if (_bpm < 60) _bpm = 60;
 
         foreach(Transform child in _spellList.transform)
         {
@@ -97,7 +103,8 @@ public class GameManager : MonoBehaviour {
                 GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Win = false;
             }
 
-            GameOver();
+            Invoke("GameOver", 5.0f);
+            return;
         }
 
         Invoke("StartRound", 2.0f);
@@ -167,7 +174,8 @@ public class GameManager : MonoBehaviour {
             int count = 0;
             if (_player1Turn)
             {
-                _bpm += 10;
+                if( _round % 2 != 0 )
+                    _bpm += 10;
 
                 GameObject.Find("LeftPosition").GetComponent<BoxCollider>().enabled = false;
                 GameObject.Find("RightPosition").GetComponent<BoxCollider>().enabled = true;
@@ -182,6 +190,9 @@ public class GameManager : MonoBehaviour {
             }
             else
             {
+                if (_round % 2 == 0 && _turn > 2)
+                    _bpm += 10;
+
                 GameObject.Find("LeftPosition").GetComponent<BoxCollider>().enabled = true;
                 GameObject.Find("RightPosition").GetComponent<BoxCollider>().enabled = false;
                 foreach (GameObject sp in SpellList)
