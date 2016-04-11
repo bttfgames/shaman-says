@@ -37,6 +37,7 @@ public class ShotCheck : MonoBehaviour {
                 {
                     GameManager.instance.FinishRound(false);
                 }
+                InputManager.instance.reset(true);
             }
             else
             {
@@ -44,6 +45,7 @@ public class ShotCheck : MonoBehaviour {
                 {
                     GameManager.instance.FinishRound(true);
                 }
+                InputManager.instance.reset(false);
             }
         }
     }

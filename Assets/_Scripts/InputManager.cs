@@ -9,6 +9,12 @@ public class InputManager : MonoBehaviour {
     private string _player1Description;
     private string _player2Description;
 
+    [HideInInspector]
+    public bool _player1Fire, _player1Up, _player1Down, _player1Left, _player1Right, _player1Played;
+    [HideInInspector]
+    public bool _player2Fire, _player2Up, _player2Down, _player2Left, _player2Right, _player2Played;
+
+
     void Awake()
     {
         if (instance == null)
@@ -40,6 +46,9 @@ public class InputManager : MonoBehaviour {
                 }
             }
         }
+        reset(true);
+        reset(false);
+
     }
 	
 	// Update is called once per frame
@@ -60,6 +69,82 @@ public class InputManager : MonoBehaviour {
 
                 i++;
             }
+        }
+
+
+        //Controle do input do player 1
+        if ((Input.GetKey(KeyCode.Space) || Input.GetButton(_player1Prefix + "_Fire")) && !_player1Fire)
+        {
+            _player1Fire = true;
+        }
+
+        if ((Input.GetKey(KeyCode.W) || Input.GetAxis(_player1Prefix + "_Y") > 0.8f) && !_player1Up)
+        {
+            _player1Up = true;
+        }
+
+        if ((Input.GetKey(KeyCode.S) || Input.GetAxis(_player1Prefix + "_Y") < -0.8f) && !_player1Down)
+        {
+            _player1Down = true;
+        }
+
+        if ((Input.GetKey(KeyCode.A) || Input.GetAxis(_player1Prefix + "_X") < -0.8f) && !_player1Left)
+        {
+            _player1Left = true;
+        }
+        if ((Input.GetKey(KeyCode.D) || Input.GetAxis(_player1Prefix + "_X") > 0.8f) && !_player1Right)
+        {
+            _player1Right = true;
+        }
+
+
+        //Controle do input do player 2
+        if ((Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetButtonDown(_player2Prefix + "_Fire")) && !_player2Fire)
+        {
+            _player2Fire = true;
+        }
+
+        if ((Input.GetKey(KeyCode.UpArrow) || Input.GetAxis(_player2Prefix + "_Y") > 0.8f) && !_player2Up)
+        {
+            _player2Up = true;
+        }
+
+        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetAxis(_player2Prefix + "_Y") < -0.8f) && !_player2Down)
+        {
+            _player2Down = true;
+        }
+
+        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis(_player2Prefix + "_X") < -0.8f) && !_player2Left)
+        {
+            _player2Left = true;
+        }
+        if ((Input.GetKey(KeyCode.RightArrow) || Input.GetAxis(_player2Prefix + "_X") > 0.8f) && !_player2Right)
+        {
+            _player2Right = true;
+        }
+    }
+
+    public void reset(bool p1)
+    {
+        if (p1)
+        {
+            //Debug.Log("Reset player1");
+            _player1Fire = false;
+            _player1Up = false;
+            _player1Down = false;
+            _player1Left = false;
+            _player1Right = false;
+            _player1Played = false;
+        }
+        else
+        {
+            //Debug.Log("Reset player2");
+            _player2Fire = false;
+            _player2Up = false;
+            _player2Down = false;
+            _player2Left = false;
+            _player2Right = false;
+            _player2Played = false;
         }
     }
 
