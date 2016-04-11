@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
     private int _p1Life = 5;
     private int _p2Life = 5;
     public AudioClip _loose;
+    private bool check;
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -53,12 +54,17 @@ public class GameManager : MonoBehaviour {
 
     public void FinishRound(bool p1Win)
     {
+        InputManager.instance.reset(true);//reseta input do player1
+        Debug.Log("Reset player1 finishround");
+        InputManager.instance.reset(false);//reseta input do player2
+        Debug.Log("Reset player2 finishround");
+
         if (p1Win)
         {
             _p2Life -= 2;
             P2Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             P2Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
-            Debug.Log("P1 win");
+           // Debug.Log("P1 win");
             P2Anim.SetTrigger("Lose");
             P1Anim.SetTrigger("Win");
         }
@@ -67,7 +73,7 @@ public class GameManager : MonoBehaviour {
             _p1Life -= 2;
             P1Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
             P1Grade.GetComponent<GUIMeatGrade>().IncreaseMeatGrade();
-            Debug.Log("P2 win");
+            //Debug.Log("P2 win");
             P1Anim.SetTrigger("Lose");
             P2Anim.SetTrigger("Win");
         }
@@ -146,13 +152,18 @@ public class GameManager : MonoBehaviour {
         //P2Anim.SetTrigger("Idle_back");
         _started = true;
         _turn = 0;
-        Debug.Log("Iniciando Turno");
+        //Debug.Log("Iniciando Turno");
         Invoke("NextTurn", 1.0f);
         //NextTurn();
     }
 
     public void NextTurn()
     {
+        InputManager.instance.reset(true);//reseta input do player1
+        Debug.Log("Reset player1 nextturn");
+        InputManager.instance.reset(false);//reseta input do player2
+        Debug.Log("Reset player2 nextturn");
+
         _turn++;
         //_spellVelocity += 0.5f;
         GameObject p1;
@@ -218,12 +229,10 @@ public class GameManager : MonoBehaviour {
         {
             if (Input.anyKeyDown)
             {
-
                 _waitingStart = false;
                 GameObject.Find("TextStart").SetActive(false);
                 StartRound();
             }
-
                 return;
         }
 
@@ -233,7 +242,6 @@ public class GameManager : MonoBehaviour {
             _turnOn = false;
 
             SceneManager.LoadScene("Menu");
-            
         }
 
         if (_started && _turnOn)
@@ -247,91 +255,106 @@ public class GameManager : MonoBehaviour {
                 _spellList.transform.Translate(Vector3.left * (_spellVelocity * Time.deltaTime));
             }
 
-            bool check = false;
+            check = true;
 
             if (_startDetect)
             {
                 //Check de input do player 1
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown(InputManager.instance._player1Prefix + "_Fire"))
-                {
-                    foreach (var sp in SpellList)
-                    {
-                        if (sp.GetComponent<Spell>()._isOnTriggerLeft)
-                        {
-                            if (Input.GetKey(KeyCode.W) || Input.GetAxis(InputManager.instance._player1Prefix + "_Y") > 0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, true);
-                                if (check)
-                                {
-                                    P1Anim.SetTrigger("Up");
-                                }
-                            }
-                            if (Input.GetKey(KeyCode.S) || Input.GetAxis(InputManager.instance._player1Prefix + "_Y") < -0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, true);
-                                if (check)
-                                    P1Anim.SetTrigger("Down");
-                            }
-                            if (Input.GetKey(KeyCode.A) || Input.GetAxis(InputManager.instance._player1Prefix + "_X") < -0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, true);
-                                if (check)
-                                    P1Anim.SetTrigger("Left");
-                            }
-                            if (Input.GetKey(KeyCode.D) || Input.GetAxis(InputManager.instance._player1Prefix + "_X") > 0.8f )
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, true);
-                                if (check)
-                                    P1Anim.SetTrigger("Right");
-                            }
-                        }
-                    }
-                    if (!check)
-                    {
-                        FinishRound(false);
-                    }
-                }
+                checkPlayer1();
 
-                if (Input.GetKeyDown(KeyCode.Comma) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetButtonDown(InputManager.instance._player2Prefix + "_Fire"))
+                //Check de input do player 2
+                checkPlayer2();
+            }
+            
+        }
+    }
+
+    private void checkPlayer1()
+    {
+        if (InputManager.instance._player1Fire && !InputManager.instance._player1Played)
+        {
+            foreach (var sp in SpellList)
+            {
+                if (sp.GetComponent<Spell>()._isOnTriggerLeft)
                 {
-                    foreach (var sp in SpellList)
+                    if (InputManager.instance._player1Up)
                     {
-                        if (sp.GetComponent<Spell>()._isOnTriggerRight)
+                        InputManager.instance._player1Played = true;
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, true);
+                        if (check)
                         {
-                            if (Input.GetKey(KeyCode.UpArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_Y") > 0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, false);
-                                if (check)
-                                    P2Anim.SetTrigger("Up");
-                            }
-                            if (Input.GetKey(KeyCode.DownArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_Y") < -0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, false);
-                                if (check)
-                                    P2Anim.SetTrigger("Down");
-                            }
-                            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_X") < -0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, false);
-                                if (check)
-                                    P2Anim.SetTrigger("Right");//Invertido por causa da animação
-                            }
-                            if (Input.GetKey(KeyCode.RightArrow) || Input.GetAxis(InputManager.instance._player2Prefix + "_X") > 0.8f)
-                            {
-                                check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, false);
-                                if (check)
-                                    P2Anim.SetTrigger("Left");//Invertido por causa da animação
-                            }
+                            P1Anim.SetTrigger("Up");
                         }
                     }
-                    if (!check)
+                    if (InputManager.instance._player1Down)
                     {
-                        FinishRound(true);
-                        
+                        InputManager.instance._player1Played = true;
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, true);
+                        if (check)
+                            P1Anim.SetTrigger("Down");
+                    }
+                    if (InputManager.instance._player1Left)
+                    {
+                        InputManager.instance._player1Played = true;
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, true);
+                        if (check)
+                            P1Anim.SetTrigger("Left");
+                    }
+                    if (InputManager.instance._player1Right)
+                    {
+                        InputManager.instance._player1Played = true;
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, true);
+                        if (check)
+                            P1Anim.SetTrigger("Right");
                     }
                 }
             }
-            
+            if (!check)
+            {
+                FinishRound(false);
+            }
+        }
+    }
+
+    private void checkPlayer2()
+    {
+        if (InputManager.instance._player2Fire)
+        {
+            foreach (var sp in SpellList)
+            {
+                if (sp.GetComponent<Spell>()._isOnTriggerRight)
+                {
+                    if (InputManager.instance._player2Up)
+                    {
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, false);
+                        if (check)
+                            P2Anim.SetTrigger("Up");
+                    }
+                    if (InputManager.instance._player2Down)
+                    {
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, false);
+                        if (check)
+                            P2Anim.SetTrigger("Down");
+                    }
+                    if (InputManager.instance._player2Left)
+                    {
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, false);
+                        if (check)
+                            P2Anim.SetTrigger("Right");//Invertido por causa da animação
+                    }
+                    if (InputManager.instance._player2Right)
+                    {
+                        check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, false);
+                        if (check)
+                            P2Anim.SetTrigger("Left");//Invertido por causa da animação
+                    }
+                }
+            }
+            if (!check)
+            {
+                FinishRound(true);
+
+            }
         }
     }
 }
