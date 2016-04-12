@@ -21,3 +21,5 @@ EditorBuildSettings:
     path: Assets/_Scenes/HelpHowToPlay.unity
   - enabled: 1
     path: Assets/_Scenes/GameOver.unity
+  - enabled: 1
+    path: Assets/_Scenes/NewGame.unity

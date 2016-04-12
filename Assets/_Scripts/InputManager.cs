@@ -9,6 +9,8 @@ public class InputManager : MonoBehaviour {
     private string _player1Description;
     private string _player2Description;
 
+	[HideInInspector]
+	public string _gameType = "Versus";
     [HideInInspector]
     public bool _player1Fire, _player1Up, _player1Down, _player1Left, _player1Right, _player1Played;
     [HideInInspector]

@@ -10,8 +10,20 @@ public class LoadOnClick : MonoBehaviour {
 	{
 		if(loadingImage != null)
 			loadingImage.SetActive (true);
-		
+		string _gameType = "Versus";
 		//Application.LoadLevel (level);
+
+		if (level == "MainVersus") {
+			_gameType = "Versus";
+			level = "Main";
+		} else if (level == "MainChalenge") {
+			_gameType = "Chalenge";
+			level = "Main";
+		}
+
+
+		GameObject.Find ("InputManager").GetComponent<InputManager> ()._gameType = _gameType;
+
 		SceneManager.LoadScene (level);
 	}
 
