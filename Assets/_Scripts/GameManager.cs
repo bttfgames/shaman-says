@@ -35,15 +35,17 @@ public class GameManager : MonoBehaviour {
     private int _p2Life = 5;
     public AudioClip _loose;
     private bool check;
+    private int _spellHitCount = 0;
+
 
     public enum gameType {Versus, Challenge};
-    private gameType _stateGameType;
+    public gameType _stateGameType;
 
     //Awake is always called before any Start functions
     void Awake()
     {
         _stateGameType = GameObject.Find("InputManager").GetComponent<InputManager>()._gameType;
-        _stateGameType = gameType.Challenge;
+        //_stateGameType = gameType.Challenge;
         if (instance == null)
         {
             instance = this;
@@ -59,7 +61,8 @@ public class GameManager : MonoBehaviour {
         {
             GameObject.Find("ShamanRight").SetActive(false);
             GameObject.Find("TriggerRight").SetActive(false);
-            
+            Destroy(GameObject.Find("RightPosition").GetComponent<checkLastSpell>());
+
             _spellList = GameObject.Find("SpellListChallenge");
         }
         
@@ -267,7 +270,7 @@ public class GameManager : MonoBehaviour {
      
         _turn++;
         //_spellVelocity += 0.5f;
-        GameObject p1;
+        
         Transform pos;
         _player1Turn = true;
         pos = RightPos;
@@ -276,23 +279,37 @@ public class GameManager : MonoBehaviour {
         GameObject.Find("LeftPosition").GetComponent<BoxCollider>().enabled = false;
         GameObject.Find("RightPosition").GetComponent<BoxCollider>().enabled = true;
         //_spellList.transform.position = pos.position;
-        Debug.Log("Inicio criar lista");
-        for (int i = 3; i < 10; i++)
+        
+        for (int i = 3; i < 13; i++)
         {
-            p1 = Instantiate(_spell, pos.position, Quaternion.identity) as GameObject;
-            p1.transform.SetParent(_spellList.transform);
-            p1.GetComponent<Spell>()._last = true;
-            p1.GetComponent<Spell>()._p1Check = false;
-            p1.GetComponent<Spell>().SetType(GetRandomEnum<Spell.SpellType>());
-            SpellList.Add(p1);
-            p1.transform.localPosition = new Vector3((_spellDistance * i), 0, 0);
+            insertNewSpell(pos);
         }
-        Debug.Log("Final criar lista");
+        
         _turnOn = true;
 
         //reinicia o ritmo
         BeatControl.instance.BeatStart();
 
+    }
+
+    void insertNewSpell(Transform pos)
+    {
+        GameObject p1;
+        p1 = Instantiate(_spell, pos.position, Quaternion.identity) as GameObject;
+        p1.transform.SetParent(_spellList.transform);
+        p1.GetComponent<Spell>()._last = true;
+        p1.GetComponent<Spell>()._p1Check = false;
+        Spell.SpellType _typeTemp;
+        do
+        {
+            _typeTemp = GetRandomEnum<Spell.SpellType>();
+            if (_typeTemp != Spell.SpellType.NEW)
+                p1.GetComponent<Spell>().SetType(_typeTemp);
+
+        } while (_typeTemp == Spell.SpellType.NEW);
+
+        SpellList.Add(p1);
+        p1.transform.localPosition = new Vector3((_spellDistance * (_spellList.GetComponentsInChildren<Spell>().Length - 1)), 0, 0);
     }
 
     void Update()
@@ -353,6 +370,16 @@ public class GameManager : MonoBehaviour {
                         }
                     break;
                 case gameType.Challenge:
+                    _spellList.transform.Translate(Vector3.left * (_spellVelocity * Time.deltaTime));
+                    check = true;
+
+                    Debug.Log("Hits: " + _spellHitCount);
+
+                    if (_startDetect)
+                    {
+                        //Check de input do player 1
+                        checkPlayer1();
+                    }
                     break;
                 default:
                     break;
@@ -398,10 +425,32 @@ public class GameManager : MonoBehaviour {
                     }
                 }
             }
+            if (InputManager.instance._player1Played && _stateGameType == gameType.Challenge)
+            {
+                insertNewSpell(RightPos);
+                _spellHitCount++;
+
+                if (_spellHitCount % 10 == 0)
+                    _bpm += 10;
+            }
+
             if (!check)
             {
-                FinishRound(false);
+                
+                if (_stateGameType == gameType.Challenge)
+                {
+                    FinishGameChallenge();
+                }
+                else
+                {
+                    FinishRound(false);
+                }
+
             }
+
+
+
+            
         }
     }
 
@@ -449,6 +498,14 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+    }
+
+    public void FinishGameChallenge()
+    {
+        GameObject.Find("GameOver").GetComponent<GameOverPersist>()._gameType = _stateGameType;
+        GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Points = _spellHitCount;
+        Debug.Log("Game Over");
+        SceneManager.LoadScene("GameOver");
     }
 
     static T GetRandomEnum<T>()

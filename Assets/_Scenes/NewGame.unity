@@ -103,7 +103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &184799115
 RectTransform:
   m_ObjectHideFlags: 0
@@ -116,10 +116,10 @@ RectTransform:
   m_Children:
   - {fileID: 703283276}
   m_Father: {fileID: 2021313319}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 2, y: -226}
+  m_AnchoredPosition: {x: 2, y: -333}
   m_SizeDelta: {x: 501.8, y: 81.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184799116
@@ -269,10 +269,10 @@ RectTransform:
   m_Children:
   - {fileID: 993200611}
   m_Father: {fileID: 2021313319}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 2, y: -358}
+  m_AnchoredPosition: {x: 2, y: -222}
   m_SizeDelta: {x: 501.8, y: 81.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &200998586
@@ -309,7 +309,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 200998587}
   m_OnClick:
     m_PersistentCalls:
@@ -1569,14 +1569,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 590554477}
-  - {fileID: 184799115}
   - {fileID: 200998585}
+  - {fileID: 184799115}
   m_Father: {fileID: 1652378356}
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -210.99}
-  m_SizeDelta: {x: 688.21, y: 500.83}
+  m_SizeDelta: {x: 688.21, y: 359.11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2021313320
 MonoBehaviour:

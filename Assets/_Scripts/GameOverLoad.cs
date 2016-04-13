@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameOverLoad : MonoBehaviour {
 
@@ -10,16 +11,32 @@ public class GameOverLoad : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Win)
+        switch (GameObject.Find("GameOver").GetComponent<GameOverPersist>()._gameType)
         {
-            _p1Lose.SetActive(false);
-            _p2Win.SetActive(false);
+            case GameManager.gameType.Versus:
+                GameObject.Find("PointsText").SetActive(false);
+                if (GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Win)
+                {
+                    _p1Lose.SetActive(false);
+                    _p2Win.SetActive(false);
+                }
+                else
+                {
+                    _p1Win.SetActive(false);
+                    _p2Lose.SetActive(false);
+                }
+                break;
+            case GameManager.gameType.Challenge:
+                GameObject.Find("PointsText").GetComponent<Text>().text = "RITUAL FINISHED WITH\n "+ GameObject.Find("GameOver").GetComponent<GameOverPersist>()._p1Points +" SPELLS";
+
+
+                _p1Lose.SetActive(false);
+                _p2Lose.SetActive(false);
+                break;
+            default:
+                break;
         }
-        else
-        {
-            _p1Win.SetActive(false);
-            _p2Lose.SetActive(false);
-        }
+        
 	}
 	
 	// Update is called once per frame

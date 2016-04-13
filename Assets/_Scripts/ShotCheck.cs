@@ -31,21 +31,34 @@ public class ShotCheck : MonoBehaviour {
         {
             other.GetComponent<Spell>()._isOnTriggerLeft = false;
 			other.GetComponent<Spell>()._isOnTriggerRight = false;
-            if( _isP1)
+
+            if (GameManager.instance._stateGameType == GameManager.gameType.Challenge)
             {
-                if(!other.GetComponent<Spell>()._p1Check)
+                if (!other.GetComponent<Spell>()._p1Check)
                 {
-                    GameManager.instance.FinishRound(false);
+                    GameManager.instance.FinishGameChallenge();
                 }
                 InputManager.instance.reset(true);
             }
             else
             {
-                if (!other.GetComponent<Spell>()._p2Check)
+
+                if (_isP1)
                 {
-                    GameManager.instance.FinishRound(true);
+                    if (!other.GetComponent<Spell>()._p1Check)
+                    {
+                        GameManager.instance.FinishRound(false);
+                    }
+                    InputManager.instance.reset(true);
                 }
-                InputManager.instance.reset(false);
+                else
+                {
+                    if (!other.GetComponent<Spell>()._p2Check)
+                    {
+                        GameManager.instance.FinishRound(true);
+                    }
+                    InputManager.instance.reset(false);
+                }
             }
         }
     }
