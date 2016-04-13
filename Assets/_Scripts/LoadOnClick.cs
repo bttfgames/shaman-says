@@ -10,14 +10,14 @@ public class LoadOnClick : MonoBehaviour {
 	{
 		if(loadingImage != null)
 			loadingImage.SetActive (true);
-		string _gameType = "Versus";
+        GameManager.gameType _gameType = GameManager.gameType.Versus;
 		//Application.LoadLevel (level);
 
 		if (level == "MainVersus") {
-			_gameType = "Versus";
+			_gameType = GameManager.gameType.Versus;
 			level = "Main";
-		} else if (level == "MainChalenge") {
-			_gameType = "Chalenge";
+		} else if (level == "MainChallenge") {
+			_gameType = GameManager.gameType.Challenge;
 			level = "Main";
 		}
 

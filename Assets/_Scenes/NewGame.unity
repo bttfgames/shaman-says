@@ -251,7 +251,7 @@ GameObject:
   - 114: {fileID: 200998586}
   - 114: {fileID: 200998589}
   m_Layer: 5
-  m_Name: Chalenge
+  m_Name: Challenge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -322,7 +322,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
           m_FloatArgument: 0
-          m_StringArgument: MainChalenge
+          m_StringArgument: MainChallenge
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1065,7 +1065,7 @@ GameObject:
   - 222: {fileID: 993200613}
   - 114: {fileID: 993200612}
   m_Layer: 5
-  m_Name: ChalengeText
+  m_Name: ChallengeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1120,7 +1120,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Chalenge
+  m_Text: Challenge
 --- !u!222 &993200613
 CanvasRenderer:
   m_ObjectHideFlags: 0

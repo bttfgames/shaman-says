@@ -35,9 +35,15 @@ public class GameManager : MonoBehaviour {
     private int _p2Life = 5;
     public AudioClip _loose;
     private bool check;
+
+    public enum gameType {Versus, Challenge};
+    private gameType _stateGameType;
+
     //Awake is always called before any Start functions
     void Awake()
     {
+        _stateGameType = GameObject.Find("InputManager").GetComponent<InputManager>()._gameType;
+        _stateGameType = gameType.Challenge;
         if (instance == null)
         {
             instance = this;
@@ -49,6 +55,13 @@ public class GameManager : MonoBehaviour {
         //Sets this to not be destroyed when reloading scene
         //DontDestroyOnLoad(gameObject);
 
+        if( _stateGameType == gameType.Challenge)
+        {
+            GameObject.Find("ShamanRight").SetActive(false);
+            GameObject.Find("TriggerRight").SetActive(false);
+            
+            _spellList = GameObject.Find("SpellListChallenge");
+        }
         
     }
 
@@ -157,6 +170,31 @@ public class GameManager : MonoBehaviour {
         //NextTurn();
     }
 
+    void StartRoundChallenge()
+    {
+        _round++;
+        SpellList = new List<GameObject>();
+        _spellList.SetActive(true);
+        BeatControl.instance.SetSpeedSpell();
+        int count = 0;
+        
+        _spellList.transform.position = RightPos.position;
+        _player1Turn = true; //Inicio oposto pois vai trocar no NextTurn
+        
+        foreach (GameObject sc in _spellCount)
+        {
+            sc.transform.SetParent(_spellList.transform);
+            sc.transform.localPosition = new Vector3((_spellDistance * count), 0, 0);
+            count++;
+        }
+        
+        _started = true;
+        _turn = 0;
+        //Debug.Log("Iniciando Turno");
+        Invoke("NextTurnChallenge", 1.0f);
+        //NextTurn();
+    }
+
     public void NextTurn()
     {
         InputManager.instance.reset(true);//reseta input do player1
@@ -222,7 +260,41 @@ public class GameManager : MonoBehaviour {
         BeatControl.instance.BeatStart();
 
     }
-    
+
+    public void NextTurnChallenge()
+    {
+        InputManager.instance.reset(true);//reseta input do player1
+     
+        _turn++;
+        //_spellVelocity += 0.5f;
+        GameObject p1;
+        Transform pos;
+        _player1Turn = true;
+        pos = RightPos;
+        //AnimAtual = (_player1Turn) ? P1Anim : P2Anim;
+
+        GameObject.Find("LeftPosition").GetComponent<BoxCollider>().enabled = false;
+        GameObject.Find("RightPosition").GetComponent<BoxCollider>().enabled = true;
+        //_spellList.transform.position = pos.position;
+        Debug.Log("Inicio criar lista");
+        for (int i = 3; i < 10; i++)
+        {
+            p1 = Instantiate(_spell, pos.position, Quaternion.identity) as GameObject;
+            p1.transform.SetParent(_spellList.transform);
+            p1.GetComponent<Spell>()._last = true;
+            p1.GetComponent<Spell>()._p1Check = false;
+            p1.GetComponent<Spell>().SetType(GetRandomEnum<Spell.SpellType>());
+            SpellList.Add(p1);
+            p1.transform.localPosition = new Vector3((_spellDistance * i), 0, 0);
+        }
+        Debug.Log("Final criar lista");
+        _turnOn = true;
+
+        //reinicia o ritmo
+        BeatControl.instance.BeatStart();
+
+    }
+
     void Update()
     {
         if(_waitingStart)
@@ -231,7 +303,18 @@ public class GameManager : MonoBehaviour {
             {
                 _waitingStart = false;
                 GameObject.Find("TextStart").SetActive(false);
-                StartRound();
+                switch (_stateGameType)
+                {
+                    case gameType.Versus:
+                        StartRound();
+                        break;
+                    case gameType.Challenge:
+                        StartRoundChallenge();
+                        break;
+                    default:
+                        break;
+                }
+                
             }
                 return;
         }
@@ -243,29 +326,37 @@ public class GameManager : MonoBehaviour {
 
             SceneManager.LoadScene("Menu");
         }
-
+        
         if (_started && _turnOn)
         {
-            if (_player1Turn)
+            switch (_stateGameType)
             {
-                _spellList.transform.Translate(Vector3.right * (_spellVelocity * Time.deltaTime));
-            }
-            else
-            {
-                _spellList.transform.Translate(Vector3.left * (_spellVelocity * Time.deltaTime));
-            }
+                case gameType.Versus:
+                        if (_player1Turn)
+                        {
+                            _spellList.transform.Translate(Vector3.right * (_spellVelocity * Time.deltaTime));
+                        }
+                        else
+                        {
+                            _spellList.transform.Translate(Vector3.left * (_spellVelocity * Time.deltaTime));
+                        }
 
-            check = true;
+                        check = true;
 
-            if (_startDetect)
-            {
-                //Check de input do player 1
-                checkPlayer1();
+                        if (_startDetect)
+                        {
+                            //Check de input do player 1
+                            checkPlayer1();
 
-                //Check de input do player 2
-                checkPlayer2();
+                            //Check de input do player 2
+                            checkPlayer2();
+                        }
+                    break;
+                case gameType.Challenge:
+                    break;
+                default:
+                    break;
             }
-            
         }
     }
 
@@ -282,9 +373,7 @@ public class GameManager : MonoBehaviour {
                         InputManager.instance._player1Played = true;
                         check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, true);
                         if (check)
-                        {
                             P1Anim.SetTrigger("Up");
-                        }
                     }
                     if (InputManager.instance._player1Down)
                     {
@@ -318,7 +407,7 @@ public class GameManager : MonoBehaviour {
 
     private void checkPlayer2()
     {
-        if (InputManager.instance._player2Fire)
+        if (InputManager.instance._player2Fire && !InputManager.instance._player2Played)
         {
             foreach (var sp in SpellList)
             {
@@ -326,24 +415,28 @@ public class GameManager : MonoBehaviour {
                 {
                     if (InputManager.instance._player2Up)
                     {
+                        InputManager.instance._player2Played = true;
                         check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.UP, false);
                         if (check)
                             P2Anim.SetTrigger("Up");
                     }
                     if (InputManager.instance._player2Down)
                     {
+                        InputManager.instance._player2Played = true;
                         check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.DOWN, false);
                         if (check)
                             P2Anim.SetTrigger("Down");
                     }
                     if (InputManager.instance._player2Left)
                     {
+                        InputManager.instance._player2Played = true;
                         check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.LEFT, false);
                         if (check)
                             P2Anim.SetTrigger("Right");//Invertido por causa da animação
                     }
                     if (InputManager.instance._player2Right)
                     {
+                        InputManager.instance._player2Played = true;
                         check = sp.GetComponent<Spell>().CheckType(Spell.SpellType.RIGHT, false);
                         if (check)
                             P2Anim.SetTrigger("Left");//Invertido por causa da animação
@@ -356,5 +449,12 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+    }
+
+    static T GetRandomEnum<T>()
+    {
+        System.Array A = System.Enum.GetValues(typeof(T));
+        T V = (T)A.GetValue(UnityEngine.Random.Range(0, A.Length));
+        return V;
     }
 }
